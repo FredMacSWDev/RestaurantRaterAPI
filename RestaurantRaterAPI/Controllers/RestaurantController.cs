@@ -54,6 +54,26 @@ namespace RestaurantRaterAPI.Controllers
         }
 
         // Update(PUT)
+        [HttpPut]
+        public async Task<IHttpActionResult> UpdateRestaurant(int id, Restaurant updatedRestaurant)
+        {
+            if (ModelState.IsValid)
+            {
+                Restaurant restaurant = await _context.Restaurants.FindAsync(id);
+
+                if (restaurant != null)
+                {
+                    restaurant.Name = updatedRestaurant.Name;
+                    restaurant.Address = updatedRestaurant.Address;
+                    restaurant.Rating = updatedRestaurant.Rating;
+
+                    await _context.SaveChangesAsync();
+                    return Ok();
+                }
+                return NotFound();
+            }
+            return BadRequest(ModelState);
+        }
 
         // Delete
     }
